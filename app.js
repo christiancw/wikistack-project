@@ -5,6 +5,7 @@ var morgan = require('morgan');
 var nunjucks = require('nunjucks');
 var routes = require('./routes');
 var bodyParser = require('body-parser');
+var path = require('path');
 
 
 // point nunjucks to the directory containing templates and turn off caching; configure returns an Environment
