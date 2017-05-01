@@ -20,12 +20,13 @@ app.engine('html', nunjucks.render);
 
 // logging middleware
 app.use(morgan('combined'));
-app.use('/', routes);
+app.use(express.static(path.join(__dirname, '/public')));
 
 // body parsing middleware
-// app.use(bodyParser.urlencoded({ extended: true })); // for HTML form submits
-// app.use(bodyParser.json()); // would be for AJAX requests
+app.use(bodyParser.urlencoded({ extended: true })); // for HTML form submits
+app.use(bodyParser.json()); // would be for AJAX requests
 //
+app.use('/', routes);
 //
 
 models.db.sync({})
@@ -39,7 +40,6 @@ models.db.sync({})
 .catch(console.error);
 
 
-app.use(express.static(path.join(__dirname, '/public')));
 
 // modular routing that uses io inside it
 // app.use('/', routes);
