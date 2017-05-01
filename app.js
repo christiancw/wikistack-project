@@ -6,6 +6,7 @@ var nunjucks = require('nunjucks');
 var routes = require('./routes');
 var bodyParser = require('body-parser');
 var path = require('path');
+var models = require('./models');
 
 
 // point nunjucks to the directory containing templates and turn off caching; configure returns an Environment
@@ -18,17 +19,25 @@ app.engine('html', nunjucks.render);
 
 
 // logging middleware
-app.use(morgan);
+app.use(morgan('combined'));
+app.use('/', routes);
 
 // body parsing middleware
 // app.use(bodyParser.urlencoded({ extended: true })); // for HTML form submits
 // app.use(bodyParser.json()); // would be for AJAX requests
 //
 //
-// // start the server
-// app.listen(1337, function(){
-//   console.log('listening on port 1337');
-// });
+
+models.db.sync({})
+.then(function() {
+  // start the server
+  var PORT = 1337;
+  app.listen(PORT, function(){
+    console.log(`Server listening on port ${PORT}`);
+  });
+})
+.catch(console.error);
+
 
 app.use(express.static(path.join(__dirname, '/public')));
 
